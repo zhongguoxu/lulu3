@@ -17,12 +17,27 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     target: LatLng(53.42072414545633, -113.63240734162835),
     zoom: 14,
   );
+  final List<Marker> myMarker = [];
+  final List<Marker> markerList = [];
+  final Marker myCurrentMarker = Marker(
+    markerId: MarkerId("My home"), // this is just id, not text string shown
+    position: LatLng(53.42072414545633, -113.63240734162835),
+  );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    markerList.add(myCurrentMarker);
+    myMarker.addAll(markerList);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: GoogleMap(
           initialCameraPosition: _initialPosition,
+          markers: Set<Marker>.of(myMarker),
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
