@@ -43,6 +43,18 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.location_searching),
+        onPressed: () async {
+          GoogleMapController controller = await _controller.future;
+          controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(53.42092874281874, -113.61833110840585),
+              zoom: 14
+            ),
+          ));
+        },
+      ),
     );
   }
 }
