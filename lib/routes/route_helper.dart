@@ -75,11 +75,11 @@ class RouteHelper {
     GetPage(name: searchProduct, page: ()=>SearchProductPage()),
     GetPage(name: cartPage, page: () {return CartPage();}, transition: Transition.fadeIn),
     // GetPage(name: addAddress, page: () {return AddNewAddressPage();}, transition: Transition.fadeIn),
-    GetPage(name: pickAddressMap, page: () {return PickNewAddressMap();}, transition: Transition.fadeIn),
-    // GetPage(name: pickAddressMap, page: (){
-    //   PickNewAddressMap _pickAddress = Get.arguments;
-    //   return _pickAddress;
-    // }),
+    // GetPage(name: pickAddressMap, page: () {return PickNewAddressMap();}, transition: Transition.fadeIn),
+    GetPage(name: pickAddressMap, page: (){
+      PickNewAddressMap _pickAddress = Get.arguments;
+      return _pickAddress;
+    }),
     GetPage(name: orderSuccess, page: ()=>OrderSuccessPage(
         orderId: Get.parameters['id']!,
         status: Get.parameters['status'].toString().contains("success")?1:0)),

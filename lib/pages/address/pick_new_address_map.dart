@@ -13,7 +13,9 @@ import '../../utils/colors.dart';
 import '../../utils/dimensions.dart';
 
 class PickNewAddressMap extends StatefulWidget {
-  const PickNewAddressMap({Key? key}) : super(key: key);
+  final bool fromOrderReview;
+  final bool fromAccountPage;
+  const PickNewAddressMap({Key? key, required this.fromOrderReview, required this.fromAccountPage}) : super(key: key);
 
   @override
   _PickNewAddressMapState createState() => _PickNewAddressMapState();
@@ -55,23 +57,8 @@ class _PickNewAddressMapState extends State<PickNewAddressMap> {
                         zoom: AddressConstants.zoom_in),
                     onMapCreated: (GoogleMapController mapController) {
                       _mapController = mapController;
-                      // _mapController!.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                      //     target:
-                      //     _initialPosition,
-                      //     zoom: AddressConstants.zoom_in)));
                     },
-                    // markers: {
-                    //   Marker(markerId: MarkerId("selected"), position: _initialPosition),
-                    // },
                     zoomControlsEnabled: false,
-                    // onCameraMove: (CameraPosition cameraPosition) {
-                    //   _cameraPosition=cameraPosition;
-                    //   print("zack camera2 is moving " + cameraPosition.target.latitude.toString());
-                    // },
-                    // onCameraIdle: () {
-                    // print("zack camera2 stop moving " + _cameraPosition.target.latitude.toString() + ' ' +_initialPosition.longitude.toString());
-                    // Get.find<UserController>().updatePosition(_cameraPosition);
-                    // },
                   ),
                   Center(
                       child: Image.asset("assets/image/pick_marker.png", height: 50, width: 50,)
@@ -132,20 +119,27 @@ class _PickNewAddressMapState extends State<PickNewAddressMap> {
                             longitude: userController.dynamicAddress?.longituge,
                           );
                           if (userController.addressList.isNotEmpty && userController.addressList.last.address == addressModel.address) {
-                            Get.offNamed(RouteHelper.getInitial());
+                            if (widget.fromAccountPage) {
+                              Get.offNamed(RouteHelper.getInitial());
+                            }
+                            if (widget.fromOrderReview) {
+                              Get.back(result: false);
+                            }
                             userController.setUpdate(false);
-                            // Get.back();
                           } else {
                             userController.addAddress(addressModel).then((value) {
                               if (value.isSuccess) {
-                                // Get.back();
-                                // Get.offNamed(RouteHelper.getInitial());
                                 Get.snackbar("Address", "Added successfully");
                               } else {
                                 Get.snackbar("Address", "Couldn't save address");
                               }
                             });
-                            Get.offNamed(RouteHelper.getInitial());
+                            if (widget.fromAccountPage) {
+                              Get.offNamed(RouteHelper.getInitial());
+                            }
+                            if (widget.fromOrderReview) {
+                              Get.back(result: true);
+                            }
                           }
                           // if(widget.fromAddress) {
                           //   widget.googleMapController!.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(

@@ -200,6 +200,10 @@ class CartController extends GetxController {
     update();
   }
 
+  void setUpdate() {
+    update();
+  }
+
   // set setCart(List<CartModel> items) {
   //   storageItems = items;
   //   for(int i=0; i<storageItems.length; i++) {

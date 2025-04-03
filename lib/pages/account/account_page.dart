@@ -7,6 +7,7 @@ import 'package:lulu3/controllers/auth_controller.dart';
 import 'package:lulu3/controllers/cart_controller.dart';
 import 'package:lulu3/controllers/location_controller.dart';
 import 'package:lulu3/controllers/user_controller.dart';
+import 'package:lulu3/pages/address/pick_new_address_map.dart';
 import 'package:lulu3/routes/route_helper.dart';
 import 'package:lulu3/utils/colors.dart';
 import 'package:lulu3/utils/dimensions.dart';
@@ -64,7 +65,14 @@ class Accountpage extends StatelessWidget {
                       GetBuilder<UserController>(builder: (userController) {
                         return GestureDetector(
                           onTap: () {
-                            Get.offNamed(RouteHelper.getPickAddressPage());
+                            // Get.offNamed(RouteHelper.getPickAddressPage());
+                            Get.toNamed(
+                                RouteHelper.getPickAddressPage(),
+                                arguments: PickNewAddressMap(
+                                  fromOrderReview: false,
+                                  fromAccountPage: true,
+                                )
+                            );
                           },
                           child: AccountWidget(
                             appIcon: AppIcon(icon: Icons.location_on, backgroundColor: AppColors.yellowColor,iconColor: Colors.white, iconSize: Dimensions.height10*2.5, size: Dimensions.height10*5,),

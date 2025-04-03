@@ -186,7 +186,7 @@ class CartPage extends StatelessWidget {
         _noteController.text = cartController.orderNote;
         return GetBuilder<CartController>(builder: (cartController) {
           return Container(
-              height: Dimensions.bottomHeightBar*1.55,
+              height: Dimensions.bottomHeightBar,
               padding: EdgeInsets.only(
                   top: Dimensions.height10,
                   bottom: Dimensions.height10,
@@ -201,97 +201,97 @@ class CartPage extends StatelessWidget {
               ),
               child: cartController.getItems.length > 0 ? Column(
                 children: [
-                  InkWell(
-                    onTap: ()=>showModalBottomSheet(
-                        backgroundColor: Colors.transparent, // default is white, which makes the border radius unvisible
-                        context: context,
-                        builder: (_){
-                          return Column(
-                            children: [
-                              Expanded(
-                                child: SingleChildScrollView( // if there is overflow issue, wrap Single by Column -> Expanded -> Single
-                                  child: Container(
-                                    height: MediaQuery.of(context).size.height*0.9,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(Dimensions.radius20),
-                                          topRight: Radius.circular(Dimensions.radius20),
-                                        )
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          height: 600,
-                                          padding: EdgeInsets.only(
-                                              left: Dimensions.width20,
-                                              right: Dimensions.width20,
-                                              top: Dimensions.height20
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              const PaymentOptionButton(
-                                                icon: Icons.money,
-                                                title: 'Cash',
-                                                subTitle: 'Pay after getting the delivery',
-                                                index: 0,
-                                              ),
-                                              SizedBox(height: Dimensions.height10,),
-                                              const PaymentOptionButton(
-                                                icon: Icons.paypal_outlined,
-                                                title: 'Online',
-                                                subTitle: 'Safer and faster payment',
-                                                index: 1,
-                                              ),
-                                              SizedBox(height: Dimensions.height20,),
-                                              Text("Delivery options", style: TextStyle(fontSize: Dimensions.font26),),
-                                              DeliveryOptions(
-                                                  value: "delivery",
-                                                  title: "Home delivery",
-                                                  amount: Get.find<CartController>().totalAmout,
-                                                  isFree: false
-                                              ),
-                                              SizedBox(height: Dimensions.height10,),
-                                              const DeliveryOptions(
-                                                  value: "carry out",
-                                                  title: "Carry out",
-                                                  amount: 0,
-                                                  isFree: true
-                                              ),
-                                              SizedBox(
-                                                height: Dimensions.height20,
-                                              ),
-                                              Text(
-                                                'Additional notes',
-                                                style: TextStyle(fontSize: Dimensions.font26),
-                                              ),
-                                              AppTextField(
-                                                textController: _noteController,
-                                                hintText: '',
-                                                icon: Icons.note,
-                                                maxLines: true,
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          );
-                        }
-                    ).whenComplete(() {
-                      cartController.setOrderNote(_noteController.text.trim());
-                    }),
-                    child: SizedBox(
-                      width: double.maxFinite,
-                      child: CommonTextButton(text: "payment options",),
-                    ),
-                  ),
-                  SizedBox(height: Dimensions.height10,),
+                  // InkWell(
+                  //   onTap: ()=>showModalBottomSheet(
+                  //       backgroundColor: Colors.transparent, // default is white, which makes the border radius unvisible
+                  //       context: context,
+                  //       builder: (_){
+                  //         return Column(
+                  //           children: [
+                  //             Expanded(
+                  //               child: SingleChildScrollView( // if there is overflow issue, wrap Single by Column -> Expanded -> Single
+                  //                 child: Container(
+                  //                   height: MediaQuery.of(context).size.height*0.2,
+                  //                   decoration: BoxDecoration(
+                  //                       color: Colors.white,
+                  //                       borderRadius: BorderRadius.only(
+                  //                         topLeft: Radius.circular(Dimensions.radius20),
+                  //                         topRight: Radius.circular(Dimensions.radius20),
+                  //                       )
+                  //                   ),
+                  //                   child: Column(
+                  //                     children: [
+                  //                       Container(
+                  //                         height: 300,
+                  //                         padding: EdgeInsets.only(
+                  //                             left: Dimensions.width20,
+                  //                             right: Dimensions.width20,
+                  //                             top: Dimensions.height20
+                  //                         ),
+                  //                         child: Column(
+                  //                           crossAxisAlignment: CrossAxisAlignment.start,
+                  //                           children: [
+                  //                             const PaymentOptionButton(
+                  //                               icon: Icons.money,
+                  //                               title: 'Cash',
+                  //                               subTitle: 'Pay after getting the delivery',
+                  //                               index: 0,
+                  //                             ),
+                  //                             SizedBox(height: Dimensions.height10,),
+                  //                             const PaymentOptionButton(
+                  //                               icon: Icons.paypal_outlined,
+                  //                               title: 'Online',
+                  //                               subTitle: 'Safer and faster payment',
+                  //                               index: 1,
+                  //                             ),
+                  //                             // SizedBox(height: Dimensions.height20,),
+                  //                             // Text("Delivery options", style: TextStyle(fontSize: Dimensions.font26),),
+                  //                             // DeliveryOptions(
+                  //                             //     value: "delivery",
+                  //                             //     title: "Home delivery",
+                  //                             //     amount: Get.find<CartController>().totalAmout,
+                  //                             //     isFree: false
+                  //                             // ),
+                  //                             // SizedBox(height: Dimensions.height10,),
+                  //                             // const DeliveryOptions(
+                  //                             //     value: "carry out",
+                  //                             //     title: "Carry out",
+                  //                             //     amount: 0,
+                  //                             //     isFree: true
+                  //                             // ),
+                  //                             // SizedBox(
+                  //                             //   height: Dimensions.height20,
+                  //                             // ),
+                  //                             // Text(
+                  //                             //   'Additional notes',
+                  //                             //   style: TextStyle(fontSize: Dimensions.font26),
+                  //                             // ),
+                  //                             // AppTextField(
+                  //                             //   textController: _noteController,
+                  //                             //   hintText: '',
+                  //                             //   icon: Icons.note,
+                  //                             //   maxLines: true,
+                  //                             // ),
+                  //                           ],
+                  //                         ),
+                  //                       )
+                  //                     ],
+                  //                   ),
+                  //                 ),
+                  //               ),
+                  //             )
+                  //           ],
+                  //         );
+                  //       }
+                  //   ).whenComplete(() {
+                  //     cartController.setOrderNote(_noteController.text.trim());
+                  //   }),
+                  //   child: SizedBox(
+                  //     width: double.maxFinite,
+                  //     child: CommonTextButton(text: "payment options",),
+                  //   ),
+                  // ),
+                  // SizedBox(height: Dimensions.height10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -317,31 +317,33 @@ class CartPage extends StatelessWidget {
                               Get.find<UserController>().getUserInfo().then((_) {
                                 if (Get.find<UserController>().addressList.isEmpty) {
                                   Get.find<UserController>().getUserAddressList(Get.find<UserController>().userModel!.id).then((_) {
-                                    if (Get.find<UserController>().addressList.isEmpty) {
-                                      Get.toNamed(RouteHelper.getPickAddressPage());
-                                    } else {
-                                      print("zack this is true 1");
+                                //     if (Get.find<UserController>().addressList.isEmpty) {
+                                //       Get.toNamed(RouteHelper.getPickAddressPage());
+                                //     } else {
+                                //       print("zack this is true 1");
                                       Get.toNamed(RouteHelper.getOrderReviewPage());
-                                    }
+                                //     }
                                   });
                                 } else {
                                   Get.toNamed(RouteHelper.getOrderReviewPage());
                                 }
+                                // Get.toNamed(RouteHelper.getOrderReviewPage());
                               });
                             } else {
                               if (Get.find<UserController>().addressList.isEmpty) {
                                 Get.find<UserController>().getUserAddressList(Get.find<UserController>().userModel!.id).then((_) {
-                                  if (Get.find<UserController>().addressList.isEmpty) {
-                                    Get.toNamed(RouteHelper.getPickAddressPage());
-                                  } else {
-                                    print("zack this is true 2");
+                                  // if (Get.find<UserController>().addressList.isEmpty) {
+                                  //   Get.toNamed(RouteHelper.getPickAddressPage());
+                                  // } else {
+                                  //   print("zack this is true 2");
                                     Get.toNamed(RouteHelper.getOrderReviewPage());
-                                  }
+                                  // }
                                 });
                               } else {
-                                print("zack this is true 3");
+                              //   print("zack this is true 3");
                                 Get.toNamed(RouteHelper.getOrderReviewPage());
                               }
+                              // Get.toNamed(RouteHelper.getOrderReviewPage());
                             }
                           } else {
                             Get.toNamed(RouteHelper.getLoginPage());
