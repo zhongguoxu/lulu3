@@ -318,7 +318,7 @@ class CartPage extends StatelessWidget {
                                 if (Get.find<UserController>().addressList.isEmpty) {
                                   Get.find<UserController>().getUserAddressList(Get.find<UserController>().userModel!.id).then((_) {
                                     if (Get.find<UserController>().addressList.isEmpty) {
-                                      Get.toNamed(RouteHelper.getAddressPage());
+                                      Get.toNamed(RouteHelper.getPickAddressPage());
                                     } else {
                                       print("zack this is true 1");
                                       Get.toNamed(RouteHelper.getOrderReviewPage());
@@ -332,7 +332,7 @@ class CartPage extends StatelessWidget {
                               if (Get.find<UserController>().addressList.isEmpty) {
                                 Get.find<UserController>().getUserAddressList(Get.find<UserController>().userModel!.id).then((_) {
                                   if (Get.find<UserController>().addressList.isEmpty) {
-                                    Get.toNamed(RouteHelper.getAddressPage());
+                                    Get.toNamed(RouteHelper.getPickAddressPage());
                                   } else {
                                     print("zack this is true 2");
                                     Get.toNamed(RouteHelper.getOrderReviewPage());

@@ -40,7 +40,7 @@ class RouteHelper {
   static String getRecommendedFood(int pageId, String page)=>'$recommendedFood?pageId=$pageId&page=$page';
   static String getCartPage()=>'$cartPage';
   static String getLoginPage()=>'$login';
-  static String getAddressPage()=>'$addAddress';
+  // static String getAddressPage()=>'$addAddress';
   static String getPickAddressPage()=>'$pickAddressMap';
   static String getOrderSuccessPage(String orderID, String status)=>'$orderSuccess?id=$orderID&status=$status';
   static String getOrderDetailPage(int orderIndex, String isCurrent)=>'$orderDetail?orderIndex=$orderIndex&isCurrent=$isCurrent';
@@ -74,7 +74,7 @@ class RouteHelper {
     ),
     GetPage(name: searchProduct, page: ()=>SearchProductPage()),
     GetPage(name: cartPage, page: () {return CartPage();}, transition: Transition.fadeIn),
-    GetPage(name: addAddress, page: () {return AddNewAddressPage();}, transition: Transition.fadeIn),
+    // GetPage(name: addAddress, page: () {return AddNewAddressPage();}, transition: Transition.fadeIn),
     GetPage(name: pickAddressMap, page: () {return PickNewAddressMap();}, transition: Transition.fadeIn),
     // GetPage(name: pickAddressMap, page: (){
     //   PickNewAddressMap _pickAddress = Get.arguments;

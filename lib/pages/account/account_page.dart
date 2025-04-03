@@ -68,7 +68,7 @@ class Accountpage extends StatelessWidget {
                           },
                           child: AccountWidget(
                             appIcon: AppIcon(icon: Icons.location_on, backgroundColor: AppColors.yellowColor,iconColor: Colors.white, iconSize: Dimensions.height10*2.5, size: Dimensions.height10*5,),
-                            bigText: BigText(text: userController.addressList.isEmpty ? "Fill in your address":Get.find<UserController>().addressList.last.address, flexible: true,),
+                            bigText: BigText(text: userController.addressList.isEmpty ? "Fill in your address":userController.addressList.last.address, flexible: true,),
                           ),
                         );
                       }),

@@ -24,8 +24,11 @@ class UserController extends GetxController implements GetxService {
   bool get isLoading => _isLoading;
   bool _finishLoadingAddressList = false;
   bool get finishLoadingAddressList => _finishLoadingAddressList;
-  bool _updateAddress = false;
-  bool get updateAddress => _updateAddress;
+  bool _saveNewAddress = false;
+  bool get saveNewAddress => _saveNewAddress;
+
+  // bool _updateAddress = false;
+  // bool get updateAddress => _updateAddress;
   UserModel? _userModel;
   UserModel? get userModel=>_userModel;
 
@@ -36,7 +39,7 @@ class UserController extends GetxController implements GetxService {
   AddressModel? _dynamicAddress;
   AddressModel? get dynamicAddress=>_dynamicAddress;
 
-  // List<Prediction> _predictionList = [];
+  List<Prediction> _predictionList = [];
 
   Future<ResponseModel> getUserInfo() async {
     http.Response response = await userRepo.getUserInfo();
@@ -91,94 +94,94 @@ class UserController extends GetxController implements GetxService {
     return _address;
   }
 
-  void updatePosition(CameraPosition position) async {
-    try {
-      print("zack update position " +position.target.latitude.toString() + ' ' + position.target.longitude.toString());
-      String _address = await getAddressFromGeocode(
-          LatLng(position.target.latitude, position.target.longitude)
-      );
-      // setCurrentAddress(position.target.latitude, position.target.longitude, _address);
-      setDynamicAddress(position.target.latitude, position.target.longitude, _address);
-      print("zack update position " +_address);
-    } catch (e) {
-      print(e);
-      // setCurrentAddress(AddressConstants.lat, AddressConstants.lng, AddressConstants.unknown_address);
-    }
+  // void updatePosition(CameraPosition position) async {
+  //   try {
+  //     print("zack update position " +position.target.latitude.toString() + ' ' + position.target.longitude.toString());
+  //     String _address = await getAddressFromGeocode(
+  //         LatLng(position.target.latitude, position.target.longitude)
+  //     );
+  //     // setCurrentAddress(position.target.latitude, position.target.longitude, _address);
+  //     setDynamicAddress(position.target.latitude, position.target.longitude, _address);
+  //     print("zack update position " +_address);
+  //   } catch (e) {
+  //     print(e);
+  //     // setCurrentAddress(AddressConstants.lat, AddressConstants.lng, AddressConstants.unknown_address);
+  //   }
+  //   update();
+  // }
+
+  Future<void> setLocationByHttp(String placeID, String address, GoogleMapController mapController) async {
+    PlacesDetailsResponse detail;
+    http.Response response = await userRepo.setLocationByHttp(placeID);
+    detail = PlacesDetailsResponse.fromJson(jsonDecode(response.body));
+
+    // setCurrentAddress(detail.result.geometry!.location.lat, detail.result.geometry!.location.lng, address);
+    setDynamicAddress(detail.result.geometry!.location.lat, detail.result.geometry!.location.lng, address);
+
+    mapController.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: LatLng(
+          detail.result.geometry!.location.lat,
+          detail.result.geometry!.location.lng,
+        ), zoom: AddressConstants.zoom_in)
+    ));
     update();
+    print("zack update address");
+    print(_dynamicAddress!.address);
   }
 
-  // void setLocationByHttp(String placeID, String address, GoogleMapController mapController) async {
-  //   _isLoading=true;
-  //   update();
-  //   PlacesDetailsResponse detail;
-  //   http.Response response = await userRepo.setLocationByHttp(placeID);
-  //   detail = PlacesDetailsResponse.fromJson(jsonDecode(response.body));
-  //
-  //   // setCurrentAddress(detail.result.geometry!.location.lat, detail.result.geometry!.location.lng, address);
-  //   setDynamicAddress(detail.result.geometry!.location.lat, detail.result.geometry!.location.lng, address);
-  //
-  //   mapController.animateCamera(CameraUpdate.newCameraPosition(
-  //       CameraPosition(target: LatLng(
-  //         detail.result.geometry!.location.lat,
-  //         detail.result.geometry!.location.lng,
-  //       ), zoom: AddressConstants.zoom_in)
-  //   ));
-  //   _isLoading = false;
-  //   update();
-  // }
-  //
-  // Future<List<Prediction>> searchLocationByHttp(String text) async {
-  //   if (text.isNotEmpty) {
-  //     http.Response response = await userRepo.searchLocationByHttp(text);
-  //     if (response.statusCode == 200) {
-  //       _predictionList=[];
-  //       //Part 5: 42:35
-  //       var jd = jsonDecode(response.body);
-  //       jd['predictions'].forEach((prediction) => _predictionList.add(Prediction.fromJson(prediction)));
-  //       return _predictionList;
-  //     }
-  //   }
-  //   return [];
-  // }
+  Future<List<Prediction>> searchLocationByHttp(String text) async {
+    if (text.isNotEmpty) {
+      http.Response response = await userRepo.searchLocationByHttp(text);
+      if (response.statusCode == 200) {
+        _predictionList=[];
+        //Part 5: 42:35
+        var jd = jsonDecode(response.body);
+        jd['predictions'].forEach((prediction) => _predictionList.add(Prediction.fromJson(prediction)));
+        return _predictionList;
+      }
+    }
+    return [];
+  }
 
   Future<ResponseModel> addAddress(AddressModel addressModel) async {
     // print("location controller @ addAddress");
-    _isLoading = true;
     http.Response response = await userRepo.addAddress(addressModel);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       await getUserAddressList(_userModel!.id);
       // String message = response.body
       responseModel = ResponseModel(true, "Successful");
-      await saveUserAddress(addressModel);
+      // await saveUserAddress(addressModel);
+      _addressList.add(addressModel);
     } else {
       // print("couldn't save the address");
       responseModel = ResponseModel(false, "Fail");
     }
-    _isLoading = false;
+    setUpdate(false);
     update();
     return responseModel;
   }
 
-  Future<bool> saveUserAddress(AddressModel addressModel) async {
-    String userAddress = jsonEncode(addressModel.toJson());
-    return await userRepo.saveUserAddress(userAddress);
-  }
+  // Future<bool> saveUserAddress(AddressModel addressModel) async {
+  //   String userAddress = jsonEncode(addressModel.toJson());
+  //   return await userRepo.saveUserAddress(userAddress);
+  // }
 
-  AddressModel getUserAddress() {
-    // print("location controller @ getUserAddress");
-    late AddressModel _addressModel;
-    // _getAddress = jsonDecode(userRepo.getUserAddress());
-    try {
-      _addressModel = AddressModel.fromJson(jsonDecode(userRepo.getUserAddress()));
-    } catch (e) {
-      print(e);
-    }
-    return _addressModel;
-  }
+  // AddressModel getUserAddress() {
+  //   // print("location controller @ getUserAddress");
+  //   late AddressModel _addressModel;
+  //   // _getAddress = jsonDecode(userRepo.getUserAddress());
+  //   try {
+  //     _addressModel = AddressModel.fromJson(jsonDecode(userRepo.getUserAddress()));
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   return _addressModel;
+  // }
 
   setUpdate(bool updateAddress) {
-    _updateAddress=updateAddress;
+    // _updateAddress=updateAddress;
+    _saveNewAddress=updateAddress;
     update();
   }
 

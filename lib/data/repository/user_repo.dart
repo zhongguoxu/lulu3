@@ -62,14 +62,14 @@ class UserRepo {
     return await httpClient.postData(AppConstants.ADD_USER_ADDRESS_URL, newJson);
   }
 
-  Future<bool> saveUserAddress(String userAddress) async {
-    return await sharedPreferences.setString(AppConstants.USER_ADDRESS, userAddress);
-  }
+  // Future<bool> saveUserAddress(String userAddress) async {
+  //   return await sharedPreferences.setString(AppConstants.USER_ADDRESS, userAddress);
+  // }
 
-  String getUserAddress() {
-    print("user address from shared preferences " + sharedPreferences.getString(AppConstants.USER_ADDRESS)!);
-    return sharedPreferences.getString(AppConstants.USER_ADDRESS)??"";
-  }
+  // String getUserAddress() {
+  //   print("user address from shared preferences " + sharedPreferences.getString(AppConstants.USER_ADDRESS)!);
+  //   return sharedPreferences.getString(AppConstants.USER_ADDRESS)??"";
+  // }
 
   Future<http.Response> registration(SignUpBody signUpBody) async {
     return await httpClient.postData(AppConstants.SIGN_UP_URL, signUpBody.toJson());
