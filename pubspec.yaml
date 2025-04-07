@@ -45,6 +45,7 @@ dependencies:
   intl: ^0.17.0
   dots_indicator: ^2.1.0
   flutter_typeahead: ^4.0.0
+  flutter_stripe: ^11.4.0
 
 dev_dependencies:
   flutter_test:

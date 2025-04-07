@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:lulu3/controllers/payment_controller.dart';
+import 'package:lulu3/data/repository/payment_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lulu3/controllers/auth_controller.dart';
 import 'package:lulu3/controllers/cart_controller.dart';
@@ -40,6 +42,7 @@ Future<void> init() async {
   Get.lazyPut(() => LocationRepo(apiClient: Get.find(), httpClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => OrderRepo(httpClient: Get.find()));
   Get.lazyPut(() => FoodTypeRepo(httpClient: Get.find()));
+  Get.lazyPut(() => PaymentRepo(httpClient: Get.find()));
 
   //controllers
   Get.lazyPut(() => SystemController(systemRepo: Get.find()));
@@ -51,4 +54,5 @@ Future<void> init() async {
   // Get.lazyPut(() => LocationController(locationRepo: Get.find()));
   Get.lazyPut(() => OrderController(orderRepo: Get.find()));
   Get.lazyPut(() => FoodTypeController(foodTypeRepo: Get.find()));
+  Get.lazyPut(() => PaymentController(paymentRepo: Get.find()));
 }

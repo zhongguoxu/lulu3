@@ -61,4 +61,11 @@ class AppConstants {
   // Orders
   static const String PLACE_ORDER_URL = BASE_URL + "/backend/order/Place_Order.php";
   static const String GET_ORDER_LIST_URL = BASE_URL + "/backend/order/Get_Order_List.php";
+
+  // Payments
+  // static const String STRIPE_ID = "pk_live_51R9uXgDYdBDUOafZ5X4sWTLZo8FogRMaN2FkjuQ9mWzRJgor7CRGBYulNgCmoqZYc3ZgpeaIDYku5xI0ju4OwKD100s5v4fv3S";
+  static const String STRIPE_ID = "pk_test_51R9uXpDCr32zAbMuHoOIGzyKVwIl9X3quDuREfAdz2w1WCcMO9AKzLitTerWmv9JK4FNjOoQ19kxlqZbM5X3qpyH00zm5Majf8";
+  static const String ADD_STRIPE_CUSTOMER_URL= BASE_URL + "/stripe/Add_Stripe_Customer.php";
+  static const String ATTACH_PAYMENT_URL= BASE_URL + "/stripe/Attach_Payment_Method_To_Customer.php";
+  static const String CHARGE_CUSTOMER_URL= BASE_URL + "/stripe/Charge_A_Customer.php";
 }
