@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lulu3/data/repository/user_repo.dart';
@@ -7,10 +6,8 @@ import 'package:lulu3/models/response_model.dart';
 import 'package:lulu3/models/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:lulu3/pages/address/address_constants.dart';
-
 import '../models/address_model.dart';
 import 'package:google_maps_webservice/src/places.dart';
-
 import '../models/signup_body_model.dart';
 
 class UserController extends GetxController implements GetxService {
@@ -75,8 +72,6 @@ class UserController extends GetxController implements GetxService {
   void setCurrentAddress(double lat, double lng, String address) {
     _currentAddress = AddressModel(addressType: "Home", latitude: lat.toString(), longitude: lng.toString(), address: address);
     update();
-    print('zack test output: '+_currentAddress!.address);
-    print(currentAddress.toString());
   }
 
   void setDynamicAddress(double lat, double lng, String address) {
@@ -85,30 +80,11 @@ class UserController extends GetxController implements GetxService {
   }
 
   Future<String> getAddressFromGeocode(LatLng latLng) async {
-    // print("location controller @ getAddressFromGeocode");
     String _address = "Unknown Location Found";
     http.Response response = await userRepo.getAddressFromGeocode(latLng);
-    // if(response.body =='OK') {
     _address = jsonDecode(response.body)["results"][0]['formatted_address'].toString();
-    // }
     return _address;
   }
-
-  // void updatePosition(CameraPosition position) async {
-  //   try {
-  //     print("zack update position " +position.target.latitude.toString() + ' ' + position.target.longitude.toString());
-  //     String _address = await getAddressFromGeocode(
-  //         LatLng(position.target.latitude, position.target.longitude)
-  //     );
-  //     // setCurrentAddress(position.target.latitude, position.target.longitude, _address);
-  //     setDynamicAddress(position.target.latitude, position.target.longitude, _address);
-  //     print("zack update position " +_address);
-  //   } catch (e) {
-  //     print(e);
-  //     // setCurrentAddress(AddressConstants.lat, AddressConstants.lng, AddressConstants.unknown_address);
-  //   }
-  //   update();
-  // }
 
   Future<void> setLocationByHttp(String placeID, String address, GoogleMapController mapController) async {
     PlacesDetailsResponse detail;
@@ -125,8 +101,6 @@ class UserController extends GetxController implements GetxService {
         ), zoom: AddressConstants.zoom_in)
     ));
     update();
-    print("zack update address");
-    print(_dynamicAddress!.address);
   }
 
   Future<List<Prediction>> searchLocationByHttp(String text) async {
@@ -144,14 +118,11 @@ class UserController extends GetxController implements GetxService {
   }
 
   Future<ResponseModel> addAddress(AddressModel addressModel) async {
-    // print("location controller @ addAddress");
     http.Response response = await userRepo.addAddress(addressModel);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       await getUserAddressList(_userModel!.id);
-      // String message = response.body
       responseModel = ResponseModel(true, "Successful");
-      // await saveUserAddress(addressModel);
       _addressList.add(addressModel);
     } else {
       // print("couldn't save the address");
@@ -185,9 +156,12 @@ class UserController extends GetxController implements GetxService {
     update();
   }
 
-  Future<ResponseModel> registration(SignUpBody signUpBody) async {
-    _isLoading = true;
+  setUpdateLoading(bool loading) {
+    _isLoading=loading;
     update();
+  }
+
+  Future<ResponseModel> registration(SignUpBody signUpBody) async {
     http.Response response = await userRepo.registration(signUpBody);
     late ResponseModel responseModel;
     if (response.statusCode == 200) {
@@ -199,8 +173,6 @@ class UserController extends GetxController implements GetxService {
       responseModel = ResponseModel(false, "Registration fails");
       print("registration fails");
     }
-    _isLoading = false;
-    update();
     return responseModel;
   }
 
@@ -213,10 +185,39 @@ class UserController extends GetxController implements GetxService {
       userRepo.saveUserAccount(UserModel.fromJson(jsonDecode(response.body)));
       _userModel = UserModel.fromJson(jsonDecode(response.body));
       responseModel = ResponseModel(true, "Login successfully");
-      print("login successfully");
     } else {
       responseModel = ResponseModel(false, "Login fails");
-      print("login fails");
+    }
+    _isLoading = false;
+    update();
+    return responseModel;
+  }
+
+  saveUserAccount(UserModel userModel) async {
+    userRepo.saveUserAccount(userModel);
+    update();
+  }
+
+  Future<ResponseModel> updateCustomerId(String email, String customerId) async {
+    http.Response response = await userRepo.updateCustomerId(email, customerId);
+    late ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      responseModel = ResponseModel(true, "Update customer_id successfully");
+    } else {
+      responseModel = ResponseModel(false, "Fails to update customer_id");
+    }
+    return responseModel;
+  }
+
+  Future<ResponseModel> updatePayment(String email, String paymentId, String last4) async {
+    _isLoading = true;
+    update();
+    http.Response response = await userRepo.updateCustomerPayment(email, paymentId, last4);
+    late ResponseModel responseModel;
+    if (response.statusCode == 200) {
+      responseModel = ResponseModel(true, "Update payment_method_id successfully");
+    } else {
+      responseModel = ResponseModel(false, "Fails to update customer_id");
     }
     _isLoading = false;
     update();

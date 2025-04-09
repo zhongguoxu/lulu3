@@ -38,11 +38,14 @@ class AppConstants {
   static const String SAUCES_TYPE_ID = "7";
   static const String BEVERAGE_TYPE_ID = "8";
   static const String PET_TYPE_ID = "9";
+  static const String ADD_CREDIT = "Add Card";
 
   static const double ZOOM_IN = 17;
 
   static const String LOGIN_URL = BASE_URL + "/backend/account/Customer_Login.php";
   static const String SIGN_UP_URL = BASE_URL + "/backend/account/Add_New_Customer.php";
+  static const String UPDATE_CUSTOMERID_URL = BASE_URL + "/backend/account/Update_CustomerId.php";
+  static const String UPDATE_PAYMENT_URL = BASE_URL + "/backend/account/Update_PaymentId_Last4.php";
   static const String GET_PRODUCTS_URL = BASE_URL + "/backend/product/Get_Products.php";
   static const String GET_RECOMMENDED_URL = BASE_URL + "/backend/product/Get_Products.php";
   static const String GET_FoodPerType_URL = BASE_URL + "/backend/product/Get_Products.php";

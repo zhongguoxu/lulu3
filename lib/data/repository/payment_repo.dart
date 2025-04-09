@@ -23,7 +23,7 @@ class PaymentRepo {
     };
     return await httpClient.postData(AppConstants.ATTACH_PAYMENT_URL, newJson);
   }
-  Future<http.Response> chargeCustomer(Int amount, String paymentMethodId, String customerId) async {
+  Future<http.Response> chargeCustomer(int amount, String paymentMethodId, String customerId) async {
     var newJson = {
       "amount": 300,
       "paymentMethodId": paymentMethodId,

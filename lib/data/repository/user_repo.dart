@@ -83,6 +83,14 @@ class UserRepo {
     return await httpClient.postData(AppConstants.LOGIN_URL, {"email": email, "password": password});
   }
 
+  Future<http.Response> updateCustomerId(String email, String customerId) async {
+    return await httpClient.postData(AppConstants.UPDATE_CUSTOMERID_URL, {"email": email, "customer_id": customerId});
+  }
+
+  Future<http.Response> updateCustomerPayment(String email, String paymentId, String last4) async {
+    return await httpClient.postData(AppConstants.UPDATE_PAYMENT_URL, {"email": email, "payment_method_id": paymentId, "last4": last4});
+  }
+
   bool userHasLoggedIn() {
     return sharedPreferences.containsKey(AppConstants.USER_ACCOUNT);
   }

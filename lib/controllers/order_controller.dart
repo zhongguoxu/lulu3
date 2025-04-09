@@ -23,26 +23,15 @@ class OrderController extends GetxController implements GetxService {
   List<PlaceOrderBody> get currentOrderList=>_currentOrderList;
   List<PlaceOrderBody> get historyOrderList=>_historyOrderList;
 
-  Future<void> placeOrder(PlaceOrderBody placeOrderBody, Function callback) async {
-    _isLoading = true;
-    update();
-    http.Response response = await orderRepo.placeOrder(placeOrderBody);
+  Future<ResponseModel> placeOrder(PlaceOrderBody placeOrderBody) async {
     late ResponseModel responseModel;
+    http.Response response = await orderRepo.placeOrder(placeOrderBody);
     if (response.statusCode == 200) {
-      String message = jsonDecode(response.body)['message'];
-      String orderId = jsonDecode(response.body)['order_id'];
-      callback(true, message, orderId, placeOrderBody.total);
-      // authRepo.saveUserAccount(UserModel.fromJson(jsonDecode(response.body)));
-      // responseModel = ResponseModel(true, "Login successfully");
-      // print("login successfully");
+      responseModel = ResponseModel(true, jsonDecode(response.body)['order_id']);
     } else {
-      callback(false, "Place order fails", "-1", placeOrderBody.total);
-      // responseModel = ResponseModel(false, "Login fails");
-      // print("login fails");
+      responseModel = ResponseModel(false, "-1");
     }
-    _isLoading = false;
-    update();
-    // return responseModel;
+    return responseModel;
   }
 
   Future<void> getOrderList(String phone) async {

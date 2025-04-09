@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lulu3/controllers/cart_controller.dart';
-import 'package:lulu3/controllers/order_controller.dart';
 import 'package:lulu3/utils/colors.dart';
 import 'package:lulu3/utils/dimensions.dart';
 

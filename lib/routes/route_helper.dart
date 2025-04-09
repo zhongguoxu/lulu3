@@ -1,6 +1,4 @@
 import 'package:get/get.dart';
-import 'package:lulu3/models/products_model.dart';
-import 'package:lulu3/pages/address/add_new_address_page.dart';
 import 'package:lulu3/pages/auth/signin_page.dart';
 import 'package:lulu3/pages/cart/cart_page.dart';
 import 'package:lulu3/pages/food/food_detail.dart';
@@ -45,7 +43,7 @@ class RouteHelper {
   static String getOrderSuccessPage(String orderID, String status)=>'$orderSuccess?id=$orderID&status=$status';
   static String getOrderDetailPage(int orderIndex, String isCurrent)=>'$orderDetail?orderIndex=$orderIndex&isCurrent=$isCurrent';
   static String getOrderReviewPage()=>'$orderReview';
-  static String getPaymentPage(int total)=>'$paymentPage?&total=$total';
+  static String getPaymentPage()=>'$paymentPage';
   static String getFoodTypePage(int typeId)=>'$foodTypePage?&typeId=$typeId';
   static String getFoodDetail(int foodId, String page, int typeId)=>'$foodDetail?foodId=$foodId&page=$page&typeId=$typeId';
   static String getSearchProductPage()=>'$searchProduct';
@@ -88,9 +86,7 @@ class RouteHelper {
       isCurrent: Get.parameters['isCurrent']!,
     )),
     GetPage(name: orderReview, page: () {return OrderReviewPage();}, transition: Transition.fadeIn),
-    GetPage(name: paymentPage, page: ()=>PaymentPage(
-      total: int.parse(Get.parameters['total']!),
-    )),
+    GetPage(name: paymentPage, page: ()=>PaymentPage()),
     GetPage(name: foodTypePage, page: ()=>FoodType(
       typeId: int.parse(Get.parameters['typeId']!),
     )),

@@ -312,7 +312,6 @@ class CartPage extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           if(Get.find<UserController>().userHasLoggedIn()) {
-                            // var canPlaceOrder = false;
                             if (Get.find<UserController>().userModel == null) {
                               Get.find<UserController>().getUserInfo().then((_) {
                                 if (Get.find<UserController>().addressList.isEmpty) {

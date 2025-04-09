@@ -6,6 +6,7 @@ import 'package:lulu3/controllers/order_controller.dart';
 import 'package:lulu3/controllers/system_controller.dart';
 import 'package:lulu3/controllers/user_controller.dart';
 import 'package:lulu3/pages/address/pick_new_address_map.dart';
+import 'package:lulu3/pages/order/widgets/CashOrOnlineButton.dart';
 import 'package:lulu3/pages/order/widgets/order_detail_item.dart';
 import 'package:lulu3/pages/order/widgets/tip_button.dart';
 import 'package:lulu3/utils/colors.dart';
@@ -14,17 +15,20 @@ import 'package:lulu3/widgets/big_text.dart';
 import 'package:get/get.dart';
 import 'package:lulu3/widgets/grey_line.dart';
 import 'package:lulu3/widgets/small_text.dart';
-
 import '../../base/common_text_button.dart';
 import '../../models/place_order_model.dart';
 import '../../routes/route_helper.dart';
 import '../../utils/app_constants.dart';
-import '../../widgets/app_text_field.dart';
 
 class OrderReviewPage extends StatelessWidget {
   const OrderReviewPage({Key? key}) : super(key: key);
 
-  void _placeOrder() {
+  void clearCartMemory() {
+    Get.find<CartController>().addToCartHistory();
+    Get.find<CartController>().clearCartAndHistory(true, false);
+  }
+
+  Future<void> _placeOrder() async {
     print("zack can place order");
     var location = Get.find<UserController>().addressList;
     var cart = Get.find<CartController>().getItems;
@@ -44,7 +48,7 @@ class OrderReviewPage extends StatelessWidget {
         tax: (subTotal*AppConstants.TAX).toStringAsFixed(2),
         total: (subTotal*(1+AppConstants.TAX)+Get.find<CartController>().tipAmount).toStringAsFixed(2),
         createdTime: time,
-        paymentMethod: Get.find<CartController>().paymentIndex==0 ? "Cash":"Card",
+        paymentMethod: Get.find<CartController>().paymentIndex==0 ? "Online":"Cash",
         customerAddress: location.length > 0 ? location.last.address : AppConstants.STORE_ADDRESS,
         customerName: user!.name,
         customerPhone: user.phone,
@@ -57,13 +61,15 @@ class OrderReviewPage extends StatelessWidget {
     );
     // print(user!.phone);
     if (Get.find<CartController>().submitOrderSuccess == false) {
-      Get.find<OrderController>().placeOrder(
-          placeOrder,
-          _callBack
-      );
-    } else {
-      int inputTotal = (double.parse(placeOrder.total)*100).round();
-      Get.offNamed(RouteHelper.getPaymentPage(inputTotal));
+      Get.find<OrderController>().placeOrder(placeOrder).then((response) {
+        if (response.isSuccess) {
+          Get.offNamed(RouteHelper.getOrderSuccessPage(response.message, 'success'));
+          clearCartMemory();
+        } else {
+          Get.find<CartController>().setSubmitStatus(false);
+          Get.toNamed(RouteHelper.getOrderSuccessPage(response.message, 'fail'));
+        }
+      });
     }
   }
 
@@ -215,25 +221,29 @@ class OrderReviewPage extends StatelessWidget {
                     cartController.deliveryType == "delivery" ? SizedBox(height: Dimensions.height10,) : Container(),
                     cartController.deliveryType == "delivery" ? GreyLine() : Container(),
                     cartController.deliveryType == "delivery" ? SizedBox(height: Dimensions.height20,) : Container(),
-                    InkWell(
-                      onTap: () {
-                        if (cartController.paymentIndex == 1) {
-
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            cartController.paymentIndex == 0 ? "Cash pay" : "Digital pay",
-                            style: TextStyle(
-                              fontSize: Dimensions.font20,
-                            ),
-                          ),
-                          cartController.paymentIndex == 0 ? SizedBox() : Icon(Icons.more_horiz_outlined),
-                        ],
-                      ),
-                    ), //Payment
+                    Text("Choose your payment method", style: TextStyle(fontSize: Dimensions.font20, fontWeight: FontWeight.bold)),
+                    SizedBox(height: Dimensions.height10,),
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CashOrOnlineButton(
+                          title: 'Online Pay',
+                          index: 0,
+                          onPressed: () {
+                            cartController.setPaymentIndex(0);
+                            if (cartController.paymentIndex == 0) {
+                              Get.toNamed(RouteHelper.getPaymentPage());
+                            }
+                          },
+                        ),
+                        SizedBox(width: Dimensions.height20,),
+                        CashOrOnlineButton(
+                          title: 'Cash',
+                          index: 1,
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),//Payment
                     SizedBox(height: Dimensions.height20,),
                     GreyLine(),
                     SizedBox(height: Dimensions.height20,),
@@ -317,7 +327,7 @@ class OrderReviewPage extends StatelessWidget {
                         _placeOrder();
                       },
                       child: CommonTextButton(text: 'Place order',),
-                    )
+                    ),
                   ],
                 ),
               );
@@ -326,28 +336,5 @@ class OrderReviewPage extends StatelessWidget {
         },),
       ),
     );
-  }
-  void _callBack(bool isSuccessful, String message, String orderId, String total) {
-    if (isSuccessful) {
-      print("zack successful callback");
-      if (Get.find<CartController>().paymentIndex == 0) { // cash order
-        Get.offNamed(RouteHelper.getOrderSuccessPage(orderId, 'success'));
-        clearCartMemory();
-      } else { // card order
-        Get.find<CartController>().setSubmitStatus(true);
-        int inputTotal = (double.parse(total)*100).round();
-        Get.offNamed(RouteHelper.getPaymentPage(inputTotal));
-        //接下来， 直接在payment page上进行定向 1。success 2. fail
-      }
-    } else {
-      print("zack fails callback");
-      Get.find<CartController>().setSubmitStatus(false);
-      Get.offNamed(RouteHelper.getOrderSuccessPage(orderId, 'fail'));
-    }
-  }
-
-  void clearCartMemory() {
-    Get.find<CartController>().addToCartHistory();
-    Get.find<CartController>().clearCartAndHistory(true, false);
   }
 }

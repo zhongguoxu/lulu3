@@ -10,6 +10,9 @@ class UserModel {
   String remember_token;
   String created_at;
   String updated_at;
+  String customer_id;
+  String payment_method_id;
+  String last4;
   UserModel({
     required this.id,
     required this.name,
@@ -22,6 +25,9 @@ class UserModel {
     required this.created_at,
     required this.updated_at,
     required this.status,
+    required this.customer_id,
+    required this.payment_method_id,
+    required this.last4,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +43,9 @@ class UserModel {
       remember_token: json['remember_token'],
       created_at: json['created_at'],
       updated_at: json['updated_at'],
+      customer_id: json['customer_id'],
+      payment_method_id: json['payment_method_id'],
+      last4: json['last4'],
     );
   }
 
@@ -53,6 +62,9 @@ class UserModel {
     data['updated_at'] = this.updated_at;
     data['password'] = this.password;
     data['remember_token'] = this.remember_token;
+    data['customer_id'] = this.customer_id;
+    data['payment_method_id'] = this.payment_method_id;
+    data['last4'] = this.last4;
     return data;
   }
 }

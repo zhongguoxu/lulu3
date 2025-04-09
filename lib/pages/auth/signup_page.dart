@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lulu3/base/custom_loader.dart';
 import 'package:lulu3/base/show_custom_snackbar.dart';
 import 'package:lulu3/controllers/auth_controller.dart';
+import 'package:lulu3/controllers/payment_controller.dart';
 import 'package:lulu3/controllers/user_controller.dart';
 import 'package:lulu3/models/signup_body_model.dart';
 import 'package:lulu3/routes/route_helper.dart';
@@ -52,10 +53,35 @@ class SignUpPage extends StatelessWidget {
             password: password,
             created_at: DateTime.now().toString(),
         );
+        // update database
+        userController.setUpdateLoading(true);
         userController.registration(signUpBody).then((status) {
           if (status.isSuccess) {
-            Get.offNamed(RouteHelper.getInitial());
+            // update stripe
+            Get.find<PaymentController>().addStripeCustomer(name, email, phone).then((response) {
+              if (response.isSuccess) {
+                // update database
+                userController.updateCustomerId(email, response.message).then((value) async {
+                  if (value.isSuccess) {
+                    // update memory
+                    userController.userModel!.customer_id = response.message;
+                    await userController.saveUserAccount(userController.userModel!);
+                    print("new user model after update customerId");
+                    print(userController.userModel!);
+                    userController.setUpdateLoading(false);
+                    Get.offNamed(RouteHelper.getInitial());
+                  } else {
+                    userController.setUpdateLoading(false);
+                    showCustomSnackBar(value.message);
+                  }
+                });
+              } else {
+                userController.setUpdateLoading(false);
+                showCustomSnackBar(response.message);
+              }
+            });
           } else {
+            userController.setUpdateLoading(false);
             showCustomSnackBar(status.message);
           }
         });

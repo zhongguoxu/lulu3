@@ -51,8 +51,8 @@ class OrderSuccessPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(Dimensions.height10),
                 child: CustomButton(
-                  buttonText: "Back to Home",
-                  onPressed: () => Get.offAllNamed(RouteHelper.getInitial()),
+                  buttonText: status == 1 ? "Back to Home" : "Try Again",
+                  onPressed: () => status == 1 ? Get.offAllNamed(RouteHelper.getInitial()) : Get.back(),
                 ),
               ),
             ],

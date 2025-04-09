@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lulu3/controllers/popular_product_controller.dart';
 import 'package:lulu3/controllers/recommended_product_controller.dart';
 import 'package:lulu3/controllers/system_controller.dart';
+import 'package:lulu3/controllers/user_controller.dart';
 import 'package:lulu3/models/products_model.dart';
 import 'package:lulu3/routes/route_helper.dart';
 import 'package:lulu3/utils/app_constants.dart';
@@ -30,6 +31,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
   @override
   void initState() {
     super.initState();
+    // Get.find<UserController>().clearSharedData();
     pageController.addListener(() {
       setState(() {
         _currPageValue = pageController.page!;
