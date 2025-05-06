@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:lulu3/data/api/http_client.dart';
 import 'package:http/http.dart' as http;
 import 'package:lulu3/utils/app_constants.dart';

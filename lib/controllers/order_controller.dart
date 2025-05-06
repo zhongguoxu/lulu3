@@ -97,4 +97,8 @@ class OrderController extends GetxController implements GetxService {
     }
     return status;
   }
+  void setLoading(bool loading) {
+    _isLoading = loading;
+    update();
+  }
 }

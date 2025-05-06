@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:lulu3/data/repository/food_type_repo.dart';
 import 'package:lulu3/models/products_model.dart';
-import '../data/repository/recommended_product_repo.dart';
 import 'package:http/http.dart' as http;
 
 class FoodTypeController extends GetxController {

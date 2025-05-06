@@ -184,6 +184,13 @@ class FoodDetail extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   popularProductController.addItem(product);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Item added to cart!"),
+                      backgroundColor: Colors.green, // Set the background color for the SnackBar
+                      duration: Duration(seconds: 1), // Duration for how long the SnackBar is shown
+                    ),
+                  );
                 },
                 child: Container(
                   padding: EdgeInsets.only(top: Dimensions.height15, bottom: Dimensions.height15, left: Dimensions.width20, right: Dimensions.width20*0.5),

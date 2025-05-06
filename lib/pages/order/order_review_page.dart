@@ -61,6 +61,7 @@ class OrderReviewPage extends StatelessWidget {
     );
     // print(user!.phone);
     if (Get.find<CartController>().submitOrderSuccess == false) {
+      // await Future.delayed(Duration(seconds: 2));
       Get.find<OrderController>().placeOrder(placeOrder).then((response) {
         if (response.isSuccess) {
           Get.offNamed(RouteHelper.getOrderSuccessPage(response.message, 'success'));
@@ -230,17 +231,19 @@ class OrderReviewPage extends StatelessWidget {
                           title: 'Online Pay',
                           index: 0,
                           onPressed: () {
-                            cartController.setPaymentIndex(0);
                             if (cartController.paymentIndex == 0) {
                               Get.toNamed(RouteHelper.getPaymentPage());
                             }
+                            cartController.setPaymentIndex(0);
                           },
                         ),
                         SizedBox(width: Dimensions.height20,),
                         CashOrOnlineButton(
                           title: 'Cash',
                           index: 1,
-                          onPressed: () {},
+                          onPressed: () {
+                            cartController.setPaymentIndex(1);
+                          },
                         ),
                       ],
                     ),//Payment
@@ -323,10 +326,17 @@ class OrderReviewPage extends StatelessWidget {
                     OrderDetailItem(itemName: "Total", itemValue: '\$'+(subTotal*(1+AppConstants.TAX)+cartController.tipAmount).toStringAsFixed(2)),
                     SizedBox(height: Dimensions.height10,),
                     InkWell(
-                      onTap: () {
-                        _placeOrder();
+                      onTap: () async {
+                        cartController.setLoading(true);
+                        await _placeOrder();
+                        cartController.setLoading(false);
                       },
-                      child: CommonTextButton(text: 'Place order',),
+                      child: cartController.isLoading ? Container(
+                        padding: EdgeInsets.only(top: Dimensions.height20, bottom: Dimensions.height20, left: Dimensions.width20, right: Dimensions.width20),
+                        child: Center(
+                          child: CircularProgressIndicator(color: AppColors.mainColor,),
+                        ),
+                      ) : CommonTextButton(text: 'Place order',),
                     ),
                   ],
                 ),

@@ -48,14 +48,16 @@ class _OrderPageState extends State<OrderPage> with TickerProviderStateMixin {
         children: [
           Container(
             width: Dimensions.screenWidth,
+            padding: EdgeInsets.symmetric(vertical: Dimensions.height20),
             child: TabBar(
               indicatorColor: Theme.of(context).primaryColor,
               indicatorWeight: 3,
               unselectedLabelColor: Theme.of(context).disabledColor,
               controller: _tabController,
+              labelColor: Theme.of(context).primaryColor,
               tabs: [
-                Tab(text: "current",),
-                Tab(text: "history",)
+                Tab(text: "Current Orders",),
+                Tab(text: "Order History",)
               ],
             ),
           ),
@@ -75,7 +77,7 @@ class _OrderPageState extends State<OrderPage> with TickerProviderStateMixin {
           Container(
             width: double.maxFinite,
             child: AspectRatio(aspectRatio: 1),
-            margin: EdgeInsets.only(left: Dimensions.width20,right: Dimensions.width20),
+            margin: EdgeInsets.symmetric(horizontal: Dimensions.width20),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.radius20),
                 image: DecorationImage(
@@ -94,12 +96,25 @@ class _OrderPageState extends State<OrderPage> with TickerProviderStateMixin {
             child: Container(
               width: double.maxFinite,
               height: Dimensions.height20*5,
-              margin: EdgeInsets.only(left: Dimensions.width20,right: Dimensions.width20),
+              margin: EdgeInsets.symmetric(horizontal: Dimensions.width20),
               decoration: BoxDecoration(
+                // gradient: LinearGradient(
+                //   colors: [AppColors.mainColor, AppColors.signColor],
+                //   begin: Alignment.topLeft,
+                //   end: Alignment.bottomRight,
+                // ),
                 color: AppColors.mainColor,
                 borderRadius: BorderRadius.circular(Dimensions.radius20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0, 4),
+                    blurRadius: 6,
+                  )
+                ],
               ),
-              child: Center(child: BigText(text: "Sign in", color: Colors.white, size: Dimensions.font26,)),
+              child: Center(
+                  child: BigText(text: "Sign in", color: Colors.white, size: Dimensions.font26,)),
             ),
           ),
         ],

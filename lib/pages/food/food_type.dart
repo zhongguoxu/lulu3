@@ -50,7 +50,6 @@ class _FoodTypeState extends State<FoodType> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: (){
-                                  // Get.toNamed(RouteHelper.getRecommendedFood(index, "type"));
                                   Get.toNamed(RouteHelper.getFoodDetail(index, "type", widget.typeId));
                                 },
                                 child: Container(

@@ -62,24 +62,29 @@ class Accountpage extends StatelessWidget {
                         bigText: BigText(text: userController.userModel!.email),
                       ),
                       SizedBox(height: Dimensions.height20,),
-                      GetBuilder<UserController>(builder: (userController) {
-                        return GestureDetector(
-                          onTap: () {
-                            // Get.offNamed(RouteHelper.getPickAddressPage());
-                            Get.toNamed(
-                                RouteHelper.getPickAddressPage(),
-                                arguments: PickNewAddressMap(
-                                  fromOrderReview: false,
-                                  fromAccountPage: true,
-                                )
-                            );
-                          },
-                          child: AccountWidget(
-                            appIcon: AppIcon(icon: Icons.location_on, backgroundColor: AppColors.yellowColor,iconColor: Colors.white, iconSize: Dimensions.height10*2.5, size: Dimensions.height10*5,),
-                            bigText: BigText(text: userController.addressList.isEmpty ? "Fill in your address":userController.addressList.last.address, flexible: true,),
+                      GestureDetector(
+                        onTap: () {
+                          userController.setBtnClickLoading(true);
+                          // Get.offNamed(RouteHelper.getPickAddressPage());
+                          Get.toNamed(
+                              RouteHelper.getPickAddressPage(),
+                              arguments: PickNewAddressMap(
+                                fromOrderReview: false,
+                                fromAccountPage: true,
+                              )
+                          );
+                          userController.setBtnClickLoading(false);
+                        },
+                        child: userController.isLoadingFromBtnClick ? Container(
+                          padding: EdgeInsets.only(top: Dimensions.height20, bottom: Dimensions.height20, left: Dimensions.width20, right: Dimensions.width20),
+                          child: Center(
+                            child: CircularProgressIndicator(color: AppColors.mainColor,),
                           ),
-                        );
-                      }),
+                        ) : AccountWidget(
+                          appIcon: AppIcon(icon: Icons.location_on, backgroundColor: AppColors.yellowColor,iconColor: Colors.white, iconSize: Dimensions.height10*2.5, size: Dimensions.height10*5,),
+                          bigText: BigText(text: userController.addressList.isEmpty ? "Fill in your address":userController.addressList.last.address, flexible: true,),
+                        ),
+                      ),
                       SizedBox(height: Dimensions.height20,),
                       //message
                       GestureDetector(

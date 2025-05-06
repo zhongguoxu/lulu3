@@ -52,24 +52,24 @@ class RouteHelper {
     GetPage(name: login, page: ()=>SignInPage(), transition: Transition.fade),
     GetPage(name: splashPage, page: ()=>SplashPage()),
     GetPage(name: initial, page: ()=>HomePage()),
-    GetPage(
-        name: popularFood,
-        page: (){
-          var pageId = Get.parameters['pageId'];
-          var page = Get.parameters['page'];
-          return PopularFoodDetail(pageId: int.parse(pageId!), page: page!);
-        },
-        transition: Transition.fadeIn,
-    ),
-    GetPage(
-        name: recommendedFood,
-        page: () {
-          var pageId = Get.parameters['pageId'];
-          var page = Get.parameters['page'];
-          return RecommendedFoodDetail(pageId: int.parse(pageId!), page: page!,);
-        },
-        transition: Transition.fadeIn,
-    ),
+    // GetPage(
+    //     name: popularFood,
+    //     page: (){
+    //       var pageId = Get.parameters['pageId'];
+    //       var page = Get.parameters['page'];
+    //       return PopularFoodDetail(pageId: int.parse(pageId!), page: page!);
+    //     },
+    //     transition: Transition.fadeIn,
+    // ),
+    // GetPage(
+    //     name: recommendedFood,
+    //     page: () {
+    //       var pageId = Get.parameters['pageId'];
+    //       var page = Get.parameters['page'];
+    //       return RecommendedFoodDetail(pageId: int.parse(pageId!), page: page!,);
+    //     },
+    //     transition: Transition.fadeIn,
+    // ),
     GetPage(name: searchProduct, page: ()=>SearchProductPage()),
     GetPage(name: cartPage, page: () {return CartPage();}, transition: Transition.fadeIn),
     // GetPage(name: addAddress, page: () {return AddNewAddressPage();}, transition: Transition.fadeIn),

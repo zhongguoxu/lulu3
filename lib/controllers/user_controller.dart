@@ -23,6 +23,8 @@ class UserController extends GetxController implements GetxService {
   bool get finishLoadingAddressList => _finishLoadingAddressList;
   bool _saveNewAddress = false;
   bool get saveNewAddress => _saveNewAddress;
+  bool _isLoadingFromBtnClick = false;
+  bool get isLoadingFromBtnClick => _isLoadingFromBtnClick;
 
   // bool _updateAddress = false;
   // bool get updateAddress => _updateAddress;
@@ -158,6 +160,11 @@ class UserController extends GetxController implements GetxService {
 
   setUpdateLoading(bool loading) {
     _isLoading=loading;
+    update();
+  }
+
+  setBtnClickLoading(bool loading) {
+    _isLoadingFromBtnClick=loading;
     update();
   }
 

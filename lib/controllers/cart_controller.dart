@@ -29,6 +29,8 @@ class CartController extends GetxController {
   bool get submitOrderSuccess => _submitOrderSuccess;
   bool _chargeOrderSuccess = false;
   bool get chargeOrderSuccess => _chargeOrderSuccess;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   set setItems(Map<int, CartModel> setItems) {
     _items = {};
@@ -201,6 +203,11 @@ class CartController extends GetxController {
   }
 
   void setUpdate() {
+    update();
+  }
+
+  void setLoading(bool loading) {
+    _isLoading = loading;
     update();
   }
 

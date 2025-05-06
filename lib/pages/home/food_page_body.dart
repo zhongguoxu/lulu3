@@ -28,6 +28,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
   var _currPageValue=0.0;
   double scaleFactor = 0.8;
   double _height = Dimensions.pageViewContainer;
+  bool _isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -48,7 +49,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return _isLoading ? CircularProgressIndicator(color: AppColors.mainColor,) : Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         // slider section
@@ -94,8 +95,8 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           return Container(
             height: Dimensions.height10*12,
             child: ListView.builder(
-                // physics: ClampingScrollPhysics(),
-                // shrinkWrap: true,
+              // physics: ClampingScrollPhysics(),
+              // shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: productTypes.length,
                 itemBuilder: (context, index) {
@@ -105,8 +106,14 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                   //   color: index == 2 ? AppColors.mainColor : Colors.black,
                   // );
                   return GestureDetector(
-                    onTap: (){
+                    onTap: () {
+                      setState(() {
+                        _isLoading = true; // Show loading when user taps
+                      });
                       Get.toNamed(RouteHelper.getFoodTypePage(productTypes[index].id!));
+                      setState(() {
+                        _isLoading = false; // Hide loading after the transition
+                      });
                     },
                     child: Container(
                       width: Dimensions.height10*10,
@@ -121,8 +128,8 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(Dimensions.radius20),
                                 border: Border.all(
-                                  color: Colors.white,
-                                  width: 5
+                                    color: Colors.white,
+                                    width: 5
                                 ),
                                 color: Colors.transparent,
                                 image: DecorationImage(
@@ -177,7 +184,13 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                 return GestureDetector(
                   onTap: (){
                     // Get.toNamed(RouteHelper.getRecommendedFood(index, "home"));
+                    setState(() {
+                      _isLoading = true; // Show loading when user taps
+                    });
                     Get.toNamed(RouteHelper.getFoodDetail(index, "recommend", 0));
+                    setState(() {
+                      _isLoading = false; // Hide loading
+                    });
                   },
                   child: Container(
                     margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height10),
@@ -280,7 +293,13 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           GestureDetector(
             onTap: () {
               // Get.toNamed(RouteHelper.getPopularFood(index, "home"));
+              setState(() {
+                _isLoading = true; // Show loading when user taps
+              });
               Get.toNamed(RouteHelper.getFoodDetail(index, "popular", 0));
+              setState(() {
+                _isLoading = false; // Show loading when user taps
+              });
             },
             child: Container(
               height: Dimensions.pageViewContainer,

@@ -35,15 +35,28 @@ class ViewOrder extends StatelessWidget {
                   itemCount: orderList.length,
                   itemBuilder: (context, index) {
                     return InkWell(
-                        onTap: () => null,
+                        onTap: () => Get.toNamed(RouteHelper.getOrderDetailPage(index, isCurrent ? "current":"history")),
                         child: Column(
                           children: [
                             Container(
-                              child: Row(
+                              // margin: EdgeInsets.only(bottom: Dimensions.height10),
+                              padding: EdgeInsets.all(Dimensions.height10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(Dimensions.radius20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black12,
+                                    offset: Offset(0, 4),
+                                    blurRadius: 8,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         children: [
@@ -52,48 +65,61 @@ class ViewOrder extends StatelessWidget {
                                           Text(orderList[index].orderId, style: TextStyle(fontSize: Dimensions.font16, fontWeight: FontWeight.bold),)
                                         ],
                                       ),
+                                      SizedBox(height: Dimensions.height10),
                                       Text(orderList[index].createdTime, style: TextStyle(fontSize: Dimensions.font16, color: Theme.of(context).disabledColor)),
                                     ],
                                   ),
-                                  Column(
+                                  SizedBox(height: Dimensions.height10),
+                                  Row(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       Container(
-                                        child: Container(
-                                          margin: EdgeInsets.all(Dimensions.height10/2),
-                                          child: Text('${orderList[index].orderStatus}',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: Dimensions.font16*0.75,
-                                            ),
-                                          ),
-                                        ),
+                                        padding: EdgeInsets.symmetric(horizontal: Dimensions.width10, vertical: Dimensions.height10/2),
+                                        margin: EdgeInsets.all(Dimensions.height10/2),
                                         decoration: BoxDecoration(
                                           color: AppColors.mainColor,
-                                          borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                                          borderRadius: BorderRadius.circular(Dimensions.radius20 / 4),
                                         ),
-                                      ),
-                                      SizedBox(height: Dimensions.height10/2,),
-                                      InkWell(
-                                        onTap: () => Get.toNamed(RouteHelper.getOrderDetailPage(index, isCurrent ? "current":"history")),
-                                        child: Container(
-                                          // margin: EdgeInsets.symmetric(horizontal: Dimensions.width10/2),
-                                          height: Dimensions.height30,
-                                          padding: EdgeInsets.symmetric(horizontal: Dimensions.width10,vertical: Dimensions.height10/2),
-                                          child: Row(
-                                            children: [
-                                              Image.asset("assets/image/test3.png", height: 15, width: 15, color: Theme.of(context).primaryColor,), // use tracking.png
-                                              SizedBox(width: Dimensions.width10/2,),
-                                              Text("Track order"),
-                                            ],
-                                          ),
-                                          decoration: BoxDecoration(
+                                        child: Text(
+                                          orderList[index].orderStatus,
+                                          style: TextStyle(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.circular(Dimensions.radius20/4),
-                                            border: Border.all(width: 1, color: Theme.of(context).primaryColor),
+                                            fontSize: Dimensions.font16,
                                           ),
                                         ),
                                       ),
+                                      SizedBox(width: Dimensions.height10,),
+                                      // isCurrent ? InkWell(
+                                      //   onTap: () => Get.toNamed(RouteHelper.getOrderDetailPage(index, isCurrent ? "current":"history")),
+                                      //   child: Container(
+                                      //     // margin: EdgeInsets.symmetric(horizontal: Dimensions.width10/2),
+                                      //     padding: EdgeInsets.symmetric(horizontal: Dimensions.width10, vertical: Dimensions.height10/2),
+                                      //     margin: EdgeInsets.all(Dimensions.height10/2),
+                                      //     decoration: BoxDecoration(
+                                      //       color: Colors.white,
+                                      //       borderRadius: BorderRadius.circular(Dimensions.radius20/4),
+                                      //       border: Border.all(width: 1, color: Theme.of(context).primaryColor),
+                                      //     ),
+                                      //     child: Row(
+                                      //       mainAxisAlignment: MainAxisAlignment.center,
+                                      //       children: [
+                                      //         Icon(
+                                      //           Icons.location_on,
+                                      //           size: 15,
+                                      //           color: Theme.of(context).primaryColor,
+                                      //         ),
+                                      //         SizedBox(width: Dimensions.width10/2,),
+                                      //         Text(
+                                      //           "Track order",
+                                      //           style: TextStyle(
+                                      //             fontSize: Dimensions.font16,
+                                      //           ),
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //   ),
+                                      // ) : Container(),
+
                                     ],
                                   )
                                 ],
