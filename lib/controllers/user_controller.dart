@@ -41,25 +41,35 @@ class UserController extends GetxController implements GetxService {
   List<Prediction> _predictionList = [];
 
   Future<ResponseModel> getUserInfo() async {
+    _isLoading = true;
     http.Response response = await userRepo.getUserInfo();
     late ResponseModel responseModel;
     if (response.statusCode == 200) {
-      _userModel = UserModel.fromJson(jsonDecode(response.body));
-      _isLoading = true;
-      responseModel = ResponseModel(true, "successfully");
+      try {
+        _userModel = UserModel.fromJson(jsonDecode(response.body));
+        responseModel = ResponseModel(true, "successfully");
+      } catch (e) {
+        responseModel = ResponseModel(false, "get user info fails");
+      }
     } else {
       responseModel = ResponseModel(false, "get user info fails");
     }
+    _isLoading = false;
     update();
     return responseModel;
   }
 
   Future<void> getUserAddressList(String userId) async {
     print("zack get user address list from user controller: ");
+    _finishLoadingAddressList = false;
     http.Response response = await userRepo.getUserAddresses(userId);
     if (response.statusCode == 200) {
-      _addressList = [];
-      _addressList.addAll(AddressList.fromJson(jsonDecode(response.body)).addresses);
+      try {
+        _addressList = [];
+        _addressList.addAll(AddressList.fromJson(jsonDecode(response.body)).addresses);
+      } catch (e) {
+        _addressList = [];
+      }
       if (_addressList.isNotEmpty) {
         AddressModel lastAddress = _addressList.last;
         setDynamicAddress(double.parse(lastAddress.latitude), double.parse(lastAddress.longituge), lastAddress.address);
@@ -109,10 +119,13 @@ class UserController extends GetxController implements GetxService {
     if (text.isNotEmpty) {
       http.Response response = await userRepo.searchLocationByHttp(text);
       if (response.statusCode == 200) {
-        _predictionList=[];
-        //Part 5: 42:35
-        var jd = jsonDecode(response.body);
-        jd['predictions'].forEach((prediction) => _predictionList.add(Prediction.fromJson(prediction)));
+        try {
+          _predictionList=[];
+          var jd = jsonDecode(response.body);
+          jd['predictions'].forEach((prediction) => _predictionList.add(Prediction.fromJson(prediction)));
+        } catch (e) {
+          _predictionList=[];
+        }
         return _predictionList;
       }
     }
@@ -127,30 +140,12 @@ class UserController extends GetxController implements GetxService {
       responseModel = ResponseModel(true, "Successful");
       _addressList.add(addressModel);
     } else {
-      // print("couldn't save the address");
       responseModel = ResponseModel(false, "Fail");
     }
     setUpdate(false);
     update();
     return responseModel;
   }
-
-  // Future<bool> saveUserAddress(AddressModel addressModel) async {
-  //   String userAddress = jsonEncode(addressModel.toJson());
-  //   return await userRepo.saveUserAddress(userAddress);
-  // }
-
-  // AddressModel getUserAddress() {
-  //   // print("location controller @ getUserAddress");
-  //   late AddressModel _addressModel;
-  //   // _getAddress = jsonDecode(userRepo.getUserAddress());
-  //   try {
-  //     _addressModel = AddressModel.fromJson(jsonDecode(userRepo.getUserAddress()));
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return _addressModel;
-  // }
 
   setUpdate(bool updateAddress) {
     // _updateAddress=updateAddress;
@@ -189,9 +184,13 @@ class UserController extends GetxController implements GetxService {
     http.Response response = await userRepo.login(email, password);
     late ResponseModel responseModel;
     if (response.statusCode == 200) {
-      userRepo.saveUserAccount(UserModel.fromJson(jsonDecode(response.body)));
-      _userModel = UserModel.fromJson(jsonDecode(response.body));
-      responseModel = ResponseModel(true, "Login successfully");
+        try {
+          userRepo.saveUserAccount(UserModel.fromJson(jsonDecode(response.body)));
+          _userModel = UserModel.fromJson(jsonDecode(response.body));
+          responseModel = ResponseModel(true, "Login successfully");
+        } catch (e) {
+          responseModel = ResponseModel(false, "User not found!");
+        }
     } else {
       responseModel = ResponseModel(false, "Login fails");
     }

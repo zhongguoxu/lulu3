@@ -22,15 +22,21 @@ class PopularProductController extends GetxController {
   int _inCartItems=0;
   int get inCartItems=>_inCartItems+_quantity;
   Future<void> getPopularProductList() async {
+    _isLoaded = false;
     http.Response response = await popularProductRepo.getPopularProductList();
     if (response.statusCode==200) { // most http call return 200 for successful response
-      _popularProductList = [];
-      _popularProductList.addAll(Product.fromJson(jsonDecode(response.body)).products);
-      // _popularProductList.addAll(ProductModel.fromJson(jsonDecode(response.body)));
+      try {
+        _popularProductList = [];
+        _popularProductList.addAll(Product.fromJson(jsonDecode(response.body)).products);
+      } catch (e) {
+        _popularProductList = [];
+      }
       _isLoaded = true;
       update();
     } else {
-
+      _popularProductList = [];
+      _isLoaded = true;
+      update();
     }
   }
 

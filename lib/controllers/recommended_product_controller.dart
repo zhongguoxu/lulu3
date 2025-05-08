@@ -13,14 +13,21 @@ class RecommendedProductController extends GetxController {
   bool _isLoaded = false;
   bool get isLoaded => _isLoaded;
   Future<void> getRecommendedProductList() async {
+    _isLoaded = false;
     http.Response response = await recommendedProductRepo.getRecommendedProductList();
     if (response.statusCode==200) { // most http call return 200 for successful response
-      _recommendedProductList = [];
-      _recommendedProductList.addAll(Product.fromJson(jsonDecode(response.body)).products);
+      try {
+        _recommendedProductList = [];
+        _recommendedProductList.addAll(Product.fromJson(jsonDecode(response.body)).products);
+      } catch (e) {
+        _recommendedProductList = [];
+      }
       _isLoaded = true;
       update();
     } else {
-      print('could not got recommended products');
+      _recommendedProductList = [];
+      _isLoaded = true;
+      update();
     }
   }
 }

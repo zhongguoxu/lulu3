@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
-import 'package:lulu3/pages/auth/signin_page.dart';
+import 'package:lulu3/pages/auth/signin_page_new.dart';
 import 'package:lulu3/pages/cart/cart_page.dart';
 import 'package:lulu3/pages/food/food_detail.dart';
 import 'package:lulu3/pages/food/food_type.dart';
-import 'package:lulu3/pages/food/popular_food_detail.dart';
-import 'package:lulu3/pages/food/recommended_food_detail.dart';
 import 'package:lulu3/pages/food/search_product.dart';
 import 'package:lulu3/pages/home/home_page.dart';
 import 'package:lulu3/pages/order/order_detail_page.dart';
@@ -49,7 +47,7 @@ class RouteHelper {
   static String getSearchProductPage()=>'$searchProduct';
 
   static List<GetPage> routes = [
-    GetPage(name: login, page: ()=>SignInPage(), transition: Transition.fade),
+    GetPage(name: login, page: ()=>SignInPageNew(), transition: Transition.fade),
     GetPage(name: splashPage, page: ()=>SplashPage()),
     GetPage(name: initial, page: ()=>HomePage()),
     // GetPage(

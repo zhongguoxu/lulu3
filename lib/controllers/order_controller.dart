@@ -27,7 +27,11 @@ class OrderController extends GetxController implements GetxService {
     late ResponseModel responseModel;
     http.Response response = await orderRepo.placeOrder(placeOrderBody);
     if (response.statusCode == 200) {
-      responseModel = ResponseModel(true, jsonDecode(response.body)['order_id']);
+      try {
+        responseModel = ResponseModel(true, jsonDecode(response.body)['order_id']);
+      } catch (e) {
+        responseModel = ResponseModel(false, "-1");
+      }
     } else {
       responseModel = ResponseModel(false, "-1");
     }
@@ -39,13 +43,16 @@ class OrderController extends GetxController implements GetxService {
     update();
     http.Response response = await orderRepo.getOrderList(phone);
     if (response.statusCode == 200) {
-      print("zack got order list");
-      _historyOrderList = [];
-      _currentOrderList = [];
-      var orderList = PlaceOrderList.fromJson(jsonDecode(response.body)).placeOrders;
-      print("zack order length is " + orderList.length.toString());
-      _historyOrderList.addAll(orderList.where((element) => element.orderStatus=="Completed"));
-      _currentOrderList.addAll(orderList.where((element) => element.orderStatus!="Completed"));
+      try {
+        _historyOrderList = [];
+        _currentOrderList = [];
+        var orderList = PlaceOrderList.fromJson(jsonDecode(response.body)).placeOrders;
+        _historyOrderList.addAll(orderList.where((element) => element.orderStatus=="Completed"));
+        _currentOrderList.addAll(orderList.where((element) => element.orderStatus!="Completed"));
+      } catch (e) {
+        _historyOrderList = [];
+        _currentOrderList = [];
+      }
     } else {
       _historyOrderList = [];
       _currentOrderList = [];

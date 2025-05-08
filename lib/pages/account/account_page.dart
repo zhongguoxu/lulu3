@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lulu3/base/custom_app_bar.dart';
 import 'package:lulu3/base/custom_loader.dart';
-import 'package:lulu3/controllers/auth_controller.dart';
 import 'package:lulu3/controllers/cart_controller.dart';
-import 'package:lulu3/controllers/location_controller.dart';
 import 'package:lulu3/controllers/user_controller.dart';
 import 'package:lulu3/pages/address/pick_new_address_map.dart';
 import 'package:lulu3/routes/route_helper.dart';
@@ -32,7 +30,7 @@ class Accountpage extends StatelessWidget {
         title: "Profile",
       ),
       body: GetBuilder<UserController>(builder: (userController) {
-        return _userLoggedIn ? (userController.isLoading & userController.finishLoadingAddressList ?
+        return _userLoggedIn ? (!userController.isLoading & userController.finishLoadingAddressList ?
         Container(
           width: double.maxFinite,
           margin: EdgeInsets.only(top: Dimensions.height20),
@@ -92,7 +90,7 @@ class Accountpage extends StatelessWidget {
                           if (Get.find<UserController>().userHasLoggedIn()) {
                             Get.find<UserController>().clearSharedData();
                             Get.find<CartController>().clearCartAndHistory(true, true);
-                            Get.toNamed(RouteHelper.getLoginPage());
+                            Get.offNamed(RouteHelper.getLoginPage());
                           }
                         },
                         child: AccountWidget(

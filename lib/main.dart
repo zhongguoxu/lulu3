@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             return GetMaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Flutter Demo',
-              // home: PaymentPage(),
+              // home: SignInPageNew(),
               initialRoute: RouteHelper.getSplashPage(),
               getPages: RouteHelper.routes,
               theme: ThemeData(

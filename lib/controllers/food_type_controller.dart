@@ -15,8 +15,12 @@ class FoodTypeController extends GetxController {
   Future<void> getFoodPerTypeProductList(int typeId) async {
     http.Response response = await foodTypeRepo.getFoodProductListPerType(typeId);
     if (response.statusCode==200) { // most http call return 200 for successful response
-      _foodPerTypeList = [];
-      _foodPerTypeList.addAll(Product.fromJson(jsonDecode(response.body)).products);
+      try {
+        _foodPerTypeList = [];
+        _foodPerTypeList.addAll(Product.fromJson(jsonDecode(response.body)).products);
+      } catch (e) {
+        _foodPerTypeList = [];
+      }
       _isLoaded = true;
       print("zack get list "+ _foodPerTypeList.length.toString());
       update();
